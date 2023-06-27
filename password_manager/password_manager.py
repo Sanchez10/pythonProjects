@@ -26,9 +26,22 @@ class PassGen:
             evento, valores = self.janela.read()
             if evento == sg.WINDOW_CLOSED:
                 break
+            elif evento == "Gerar Senha":
+                nova_senha = self.gerar_senha(valores)
+                print(nova_senha)
+                self.salvar_senha(nova_senha, valores)
 
-    def salvar_senha(self):
-        pass
+    def gerar_senha(self, valores):
+        char_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%&*"
+        chars = random.choices(char_list, k=int(valores["total_chars"]))
+        new_pass = "".join(chars)
+        return new_pass
+
+    def salvar_senha(self, nova_senha, valores):
+        with open("senhas.txt", "a", newline="") as arquivo:
+            arquivo.write(f"\nsite: {valores['site']}, usuario: {valores['usuario']}, nova senha: {nova_senha}")
+        
+        print("Arquivo salvo!")
 
 gen = PassGen()
 gen.Iniciar()
