@@ -1,47 +1,41 @@
-# Design a password management application that securely stores and manages user credentials. 
-# Implement features like encryption, password generation, and integration with a database. 
-# This project will allow you to explore concepts such as encryption algorithms, data security, and user authentication. 
+import customtkinter
+from tkinter import *
 
-import random
-import PySimpleGUI as sg
-import os
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("dark-blue")
 
-class PassGen:
-    def __init__(self):
-        # LAYOUT
-        sg.theme('Black')
-        layout = [
-            [sg.Text("Site/Software", size=(10, 1)), sg.Input(key="site", size=(20, 1))],
-            [sg.Text("Email/Usuário", size=(10, 1)), sg.Input(key="usuario", size=(20,1))],
-            [sg.Text("Quantidade de caracteres"), sg.Combo(values=list(range(30)), key="total_chars", default_value=1, size=(3,1))],
-            [sg.Output(size=(32, 5))],
-            [sg.Button("Gerar Senha")]
-        ]
+window = customtkinter.CTk()
+window.geometry("700x410")
+window.title("Login Sytem")
+window.iconbitmap("password_code.ico")
+window.resizable("False", "False")
 
-        # DECLARAR JANELA
-        self.janela = sg.Window("Password Generator", layout)
-    
-    def Iniciar(self):
-        while True:
-            evento, valores = self.janela.read()
-            if evento == sg.WINDOW_CLOSED:
-                break
-            elif evento == "Gerar Senha":
-                nova_senha = self.gerar_senha(valores)
-                print(nova_senha)
-                self.salvar_senha(nova_senha, valores)
+# Login window image
+img = PhotoImage(file="login.png")
+label_img = customtkinter.CTkLabel(master=window, image=img, text="")
+label_img.place(x=25, y=75)
 
-    def gerar_senha(self, valores):
-        char_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%&*"
-        chars = random.choices(char_list, k=int(valores["total_chars"]))
-        new_pass = "".join(chars)
-        return new_pass
+label_tt = customtkinter.CTkLabel(master=window, text='Make login to acces your manager \npasswords', font=('Roboto', 18, 'bold'), text_color='#1F538D')
+label_tt.place(x=25, y=10)
 
-    def salvar_senha(self, nova_senha, valores):
-        with open("senhas.txt", "a", newline="") as arquivo:
-            arquivo.write(f"\nsite: {valores['site']}, usuario: {valores['usuario']}, nova senha: {nova_senha}")
-        
-        print("Arquivo salvo!")
+# Frame
+frame = customtkinter.CTkFrame(master=window, width=350, height=406)
+frame.pack(side=RIGHT)
 
-gen = PassGen()
-gen.Iniciar()
+# Frame widgets
+label = customtkinter.CTkLabel(master=frame, text='Login', font = ('Roboto', 20, 'bold'), text_color= ('white') )
+label.place(x=25, y=10)
+
+# User
+entry_user = customtkinter.CTkEntry(master=frame, placeholder_text='User', width=300)
+entry_user.place(x=25, y=105)
+
+# Password
+entry_password = customtkinter.CTkEntry(master=frame, placeholder_text='Password', width=300)
+entry_password.place(x=25, y=155)
+
+# Button
+button = customtkinter.CTkButton(master=frame, text='LOGIN', width=300)
+button.place(x=25, y=205)
+
+window.mainloop()
