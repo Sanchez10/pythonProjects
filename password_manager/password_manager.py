@@ -7,8 +7,9 @@ from Trace import TraceLogger
 window = ctk.CTk()
 
 class Application():
-    def __init__(self):
+    def __init__(self, db: DatabasePassword):
         self.window = window
+        self.db = db
         self.theme()
         self.main_window()
         self.login_window()
@@ -102,10 +103,16 @@ class Application():
                 entry_pass_value = entry_pass_var.get()
                 entry_conf_pass_value = entry_conf_pass_var.get()
                 if entry_user_value and entry_email_value and entry_pass_value and entry_conf_pass_value:
-                    messagebox.showinfo(title="Infos", message=f"""User: {entry_user_value} \nEmail: {entry_email_value} \nPassword: {entry_pass_value} \nConf. Password: {entry_conf_pass_value}""")
+                    if entry_pass_value == entry_conf_pass_value:
+                        messagebox.showinfo(title="Infos", message=f"""User: {entry_user_value} \nEmail: {entry_email_value} \nPassword: {entry_pass_value} \nConf. Password: {entry_conf_pass_value}""")
+                    else:
+                        messagebox.showwarning(title="Senhas não coincidem!", message="Por favor, digite novamente a senha!")
                 else:
                     messagebox.showwarning(title="Campo vazio", message="Por favor, digite um valor!")
 
+                insert_query = """INSERT INTO Users (username, email, password) VALUES (?, ?, ?)"""
+                params = (entry_user_value, entry_email_value, entry_pass_value)
+                db.execute_write(insert_query, params)
             
             save_button = ctk.CTkButton(master=rg_frame, text='Register', width=100, fg_color="green", hover_color="#014B05", command=save_user).place(x=170, y=220)
 
@@ -121,11 +128,10 @@ if __name__ == "__main__":
             Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             UserName TEXT NOT NULL,
             Email TEXT NOT NULL,
-            Password TEXT NOT NULL,
-            ConfPassword TEXT NOT NULL
+            Password TEXT NOT NULL
         )
     """
-    db.execute_update(create_table_query)
+    db.execute_write(create_table_query)
 
     # # Inserir dados
     # insert_query = "INSERT INTO usuarios (nome, idade) VALUES (?, ?);"
@@ -142,4 +148,4 @@ if __name__ == "__main__":
 
     # db.close()
 
-    Application()
+    Application(db)

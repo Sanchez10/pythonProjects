@@ -1,6 +1,6 @@
 import tkinter as tk
 
-def toggle_password():
+def toggle_password() -> None:
     if show_password.get():
         password_entry.config(show="")
     else:
