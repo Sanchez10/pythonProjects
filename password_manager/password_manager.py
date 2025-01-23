@@ -1,8 +1,6 @@
 import customtkinter as ctk
-from tkinter import *
+from tkinter import PhotoImage, StringVar, messagebox, RIGHT
 from database import DatabasePassword
-from tkinter import messagebox
-from Trace import TraceLogger
 
 window = ctk.CTk()
 
@@ -28,16 +26,17 @@ class Application():
     def login_window(self):
         # Login window image
         img = PhotoImage(file="login.png")
-        label_img = ctk.CTkLabel(master=window, image=img, text="").place(x=25, y=75)
+        label_img = ctk.CTkLabel(master=window, image=img, text="")
+        label_img.place(x=25, y=75)
 
-        label_tt = ctk.CTkLabel(master=window, text='Make login to acces your manager \npasswords', font=('Roboto', 18, 'bold'), text_color='#1F538D').place(x=25, y=10)
+        ctk.CTkLabel(master=window, text='Make login to acces your manager \npasswords', font=('Roboto', 18, 'bold'), text_color='#1F538D').place(x=25, y=10)
 
         # Frame
         login_frame = ctk.CTkFrame(master=window, width=320, height=260)
         login_frame.pack(side=RIGHT, padx=25, pady=10)
 
         # Frame widgets
-        label = ctk.CTkLabel(master=login_frame, text='Login', font=('Roboto', 20, 'bold'), text_color= ('white') ).place(x=134, y=10)
+        ctk.CTkLabel(master=login_frame, text='Login', font=('Roboto', 20, 'bold'), text_color= ('white') ).place(x=134, y=10)
 
         # User label
         entry_user = ctk.CTkEntry(master=login_frame, placeholder_text='User', width=280).place(x=20, y=60)
@@ -46,7 +45,7 @@ class Application():
         entry_password = ctk.CTkEntry(master=login_frame, placeholder_text='Password', width=280, show='*').place(x=20, y=110)
 
         def login_user():
-            msg = messagebox.showinfo(title="Status of enrollment", message="Congratulation user enrolled success!")
+            messagebox.showinfo(title="Status of enrollment", message="Congratulation user enrolled success!")
             newin = ctk.CTk()
             ctk.set_appearance_mode("dark")
             ctk.set_default_color_theme("dark-blue")
